@@ -1,0 +1,26 @@
+  [4;36;1mSQL (0.000257)[0m   [0;1mselect sqlite_version(*)[0m
+  [4;35;1mSQL (0.429511)[0m   [0mCREATE TABLE schema_info (version integer)[0m
+  [4;36;1mSQL (0.299431)[0m   [0;1mINSERT INTO schema_info (version) VALUES(0)[0m
+  [4;35;1mSQL (0.000469)[0m   [0mSELECT version FROM schema_info[0m
+  [4;36;1mSQL (0.000000)[0m   [0;1mSQLite3::SQLException: table schema_info already exists: CREATE TABLE schema_info (version integer)[0m
+  [4;35;1mSQL (0.000333)[0m   [0mSELECT version FROM schema_info[0m
+Migrating to CreateTeachers (1)
+  [4;36;1mSQL (0.231957)[0m   [0;1mCREATE TABLE teachers ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "first_name" varchar(255) DEFAULT NULL, "last_name" varchar(255) DEFAULT NULL, "created_at" datetime DEFAULT NULL, "updated_at" datetime DEFAULT NULL) [0m
+  [4;35;1mSQL (0.388005)[0m   [0mUPDATE schema_info SET version = 1[0m
+  [4;36;1mSQL (0.000561)[0m   [0;1mSELECT version FROM schema_info[0m
+Migrating to CreateTimeslots (2)
+  [4;35;1mSQL (0.288929)[0m   [0mCREATE TABLE timeslots ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "start_hour" integer DEFAULT NULL, "start_minute" integer DEFAULT NULL, "duration" integer DEFAULT NULL, "days_of_week" varchar(14) DEFAULT NULL, "created_at" datetime DEFAULT NULL, "updated_at" datetime DEFAULT NULL) [0m
+  [4;36;1mSQL (0.270863)[0m   [0;1mUPDATE schema_info SET version = 2[0m
+  [4;35;1mSQL (0.000342)[0m   [0mSELECT version FROM schema_info[0m
+Migrating to CreateAssignments (3)
+  [4;36;1mSQL (0.261865)[0m   [0;1mCREATE TABLE assignments ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "teacher_id" integer DEFAULT NULL, "timeslot_id" integer DEFAULT NULL, "assigned_date" date DEFAULT NULL, "created_at" datetime DEFAULT NULL, "updated_at" datetime DEFAULT NULL) [0m
+  [4;35;1mSQL (0.276298)[0m   [0mUPDATE schema_info SET version = 3[0m
+Reached target version: 3
+  [4;36;1mSQL (0.000334)[0m   [0;1mSELECT * FROM schema_info[0m
+  [4;35;1mSQL (0.000392)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.000068)[0m   [0;1mPRAGMA index_list(assignments)[0m
+  [4;35;1mSQL (0.000066)[0m   [0mPRAGMA index_list(teachers)[0m
+  [4;36;1mSQL (0.000104)[0m   [0;1mPRAGMA index_list(timeslots)[0m
