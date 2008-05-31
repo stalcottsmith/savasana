@@ -28,6 +28,7 @@ class Savasana < Limber::Components::Application
         return data.firstName + ' ' + data.lastName;
       }
       
+      import com.savasana.model.Teacher;
     END_AS
   end
   
@@ -52,10 +53,20 @@ class Savasana < Limber::Components::Application
   end
   
   def teachers_panel
-    panel(:teachersPanel, :title => "Teachers", :width => "40%", :height => "40%") {
-      data_grid_for(:teachers, :id => "teachersDG") do |grid|
-        grid.column "Name", :name, :label_function => "firstAndLastName"
-      end
+    panel(:teachersPanel, :title => "Teachers",
+          :width => "40%", :height => "40%") {
+      h_box {
+        data_grid_for(:teachers, :id => "teachersDG",  # DG - stands for data grid 
+                      :click => "_model.currentTeacher = Teacher(teachersDG.selectedItem)") do |grid|
+          grid.column "Name", :name, :label_function => "firstAndLastName", :width => 150
+        end
+        
+        form_for(:teacher) do |f|
+          f.text "First Name", :first_name
+          f.text "Last Name", :last_name
+          f.create_or_update_buttons
+        end
+      }
     }
   end
   

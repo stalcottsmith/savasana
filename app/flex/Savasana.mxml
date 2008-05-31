@@ -1,16 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Application layout="vertical" backgroundGradientColors="[#ffffff, #000000]" xmlns:mx="http://www.adobe.com/2006/mxml" creationCompleteEffect="fadeIn" xmlns:control="com.savasana.control.*" creationComplete="handleCreationComplete()" xmlns:component="com.savasana.components.*" width="100%" height="100%">
+<mx:Application creationCompleteEffect="fadeIn" layout="vertical" xmlns:mx="http://www.adobe.com/2006/mxml" backgroundGradientColors="[#ffffff, #000000]" xmlns:control="com.savasana.control.*" width="100%" creationComplete="handleCreationComplete()" xmlns:component="com.savasana.components.*" height="100%">
   <mx:Script>
 <![CDATA[
     import com.savasana.components.*;
     import com.savasana.model.SavasanaModelLocator;
     import com.savasana.util.CairngormUtils;
     import com.savasana.control.EventNames;
+    import com.savasana.model.Teacher;
     private function handleCreationComplete():void {
         CairngormUtils.dispatchEvent(EventNames.LIST_TEACHERS);
     }
 [Bindable]
 private var _model:SavasanaModelLocator = SavasanaModelLocator.getInstance();
+
+        public function createTeacher0(values:Object):void {
+          var model:Object = new Teacher();
+          model.lastName = values.lastName;
+          model.firstName = values.firstName;
+          CairngormUtils.dispatchEvent(EventNames.CREATE_TEACHER, model);
+        }
+
+        public function updateTeacher0(values:Object):void {
+          var model:Object = new Teacher(_model.currentTeacher.id);
+          model.lastName = values.lastName;
+          model.firstName = values.firstName;
+          model.id = values.id;
+          CairngormUtils.dispatchEvent(EventNames.UPDATE_TEACHER, model);
+        }
       import mx.controls.Alert;
       public static function debug(str:String):void {
         /* Alert.show(str); */
@@ -20,6 +36,7 @@ private var _model:SavasanaModelLocator = SavasanaModelLocator.getInstance();
         return data.firstName + ' ' + data.lastName;
       }
       
+      import com.savasana.model.Teacher;
 
 ]]>
 </mx:Script>
@@ -30,12 +47,47 @@ private var _model:SavasanaModelLocator = SavasanaModelLocator.getInstance();
   </mx:Style>
   <mx:HBox>
     <mx:Panel title="Teachers" width="40%" id="teachersPanel" height="40%">
-      <mx:DataGrid dataProvider="{_model.teachers}" id="teachersDG">
-        <mx:columns>
-          <mx:DataGridColumn dataField="name" headerText="Name" labelFunction="firstAndLastName">
-          </mx:DataGridColumn>
-        </mx:columns>
-      </mx:DataGrid>
+      <mx:HBox>
+        <mx:DataGrid dataProvider="{_model.teachers}" id="teachersDG" click="_model.currentTeacher = Teacher(teachersDG.selectedItem)">
+          <mx:columns>
+            <mx:DataGridColumn headerText="Name" dataField="name" labelFunction="firstAndLastName" width="150">
+            </mx:DataGridColumn>
+          </mx:columns>
+        </mx:DataGrid>
+        <mx:Form id="teacherForm" styleName="teacherForm">
+          <mx:FormItem label="First Name">
+            <mx:TextInput id="firstNameText" text="{_model.currentTeacher.firstName}">
+            </mx:TextInput>
+          </mx:FormItem>
+          <mx:FormItem label="Last Name">
+            <mx:TextInput id="lastNameText" text="{_model.currentTeacher.lastName}">
+            </mx:TextInput>
+          </mx:FormItem>
+          <mx:FormItem>
+            <mx:ControlBar paddingLeft="0">
+              <mx:ViewStack selectedIndex="{_model.currentTeacher.id == 0 ? 0 : 1}" id="teacherVSK">
+                <mx:HBox>
+                  <mx:Spacer width="10">
+                  </mx:Spacer>
+                  <mx:Button label="Create" click="createTeacher0({lastName: lastNameText.text,
+                          firstName:firstNameText.text})">
+                  </mx:Button>
+                </mx:HBox>
+                <mx:HBox>
+                  <mx:Spacer width="100%">
+                  </mx:Spacer>
+                  <mx:Button label="Update" click="updateTeacher0({lastName: lastNameText.text,
+                          firstName:firstNameText.text,
+                          id:       _model.currentTeacher.id})">
+                  </mx:Button>
+                </mx:HBox>
+              </mx:ViewStack>
+              <mx:Button label="Cancel">
+              </mx:Button>
+            </mx:ControlBar>
+          </mx:FormItem>
+        </mx:Form>
+      </mx:HBox>
     </mx:Panel>
     <mx:Panel title="Timeslots" width="40%" id="timeslotsPanel" height="40%">
     </mx:Panel>
