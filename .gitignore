@@ -4,3 +4,4 @@
 *.mxml
 *.svn
 *.sqlite3
+schema.rb
