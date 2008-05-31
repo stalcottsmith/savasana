@@ -1,4 +1,10 @@
 ActionController::Routing::Routes.draw do |map|
+  
+  map.resources :teachers
+  map.resources :timeslots
+  map.resources :assignments
+  map.resources :users
+  
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:

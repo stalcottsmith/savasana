@@ -54,6 +54,8 @@ module Limber
         end
 
         def generate_flex
+          Limber.set_app_name app_name
+
           STDERR.puts "Building #{file_name}"
           File.open(file_name, "w+") do |f|
             f.write(%{<?xml version="1.0" encoding="utf-8"?>\n})
@@ -117,7 +119,7 @@ module Limber
           s << handle_creation_complete
           @@functions.each { |function| s << function.gsub(/#\{(.*)\}/) {|m| puts m ; eval(m)} } unless @@functions.nil?
           behaviors.collect(&:action_script_definitions).flatten.compact.uniq.each {|as| s << as }
-          s << self.custom_action_script if self.respond_to?(:custom_action_script)
+          s << self.custom_action_script if self.respond_to?(:custom_action_script) && self.custom_action_script
           s << self.component_action_script
           return s
         end

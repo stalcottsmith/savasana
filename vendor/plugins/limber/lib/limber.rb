@@ -9,6 +9,15 @@ require 'limber/core_ext/scaffold_limber_resource'
 
 module Limber
   
+  def self.set_app_name(name)
+    @@app_name = name
+  end
+  
+  def self.app_name
+    raise "app_name not set" unless @@app_name
+    @@app_name
+  end
+  
   
   def self.const_missing(symbol)
     module_eval %{
@@ -59,7 +68,6 @@ require 'limber/behavior/event_alert'
 require 'limber/behavior/format_currency'
 require 'limber/behavior/format_date'
 require 'limber/behavior/model_value'
-require 'limber/behavior/parse_date'
 require 'limber/behavior/create'
 require 'limber/behavior/update'
 require 'limber/behavior/destroy'

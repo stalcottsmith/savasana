@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" title="Status" creationComplete="handleCreationComplete()" xmlns:component="com.savasana.components.*" width="350" backgroundAlpha="0.75">
+  <mx:Script>
+<![CDATA[
+    private function handleCreationComplete():void {
+    }
+
+]]>
+</mx:Script>
+  <mx:HBox paddingRight="5" paddingTop="5" paddingBottom="5" paddingLeft="5">
+    <mx:VBox>
+      <mx:Spacer height="8">
+      </mx:Spacer>
+      <mx:ProgressBar mode="manual" labelPlacement="left" label="Working" width="100%" id="progressBar">
+      </mx:ProgressBar>
+    </mx:VBox>
+  </mx:HBox>
+</mx:Panel>
